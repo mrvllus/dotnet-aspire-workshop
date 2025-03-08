@@ -1,0 +1,3 @@
+{
+    "dotnet.defaultSolution": "start-with-api/MyWeatherHub.sln"
+}
