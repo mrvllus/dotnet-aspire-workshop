@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/start-with-api"
+    directory: "/start"
     schedule:
       interval: "weekly"
   - package-ecosystem: "nuget"

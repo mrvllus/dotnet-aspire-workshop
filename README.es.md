@@ -40,7 +40,7 @@ Este taller de .NET Aspire forma parte de la serie [Aprendamos .NET](https://aka
 
 Un conjunto completo de diapositivas está disponible para este taller [aquí](./workshop/localization/es/AspireWorkshop.pptx).
 
-El proyecto inicial para este taller se encuentra en la carpeta `start-with-api`. Este proyecto es una API de clima simple que utiliza la API del Servicio Meteorológico Nacional para obtener datos meteorológicos y un frontend web para mostrar los datos meteorológicos impulsado por Blazor.
+El proyecto inicial para este taller se encuentra en la carpeta `start`. Este proyecto es una API de clima simple que utiliza la API del Servicio Meteorológico Nacional para obtener datos meteorológicos y un frontend web para mostrar los datos meteorológicos impulsado por Blazor.
 
 Este taller está diseñado para completarse en un marco de tiempo de 2 horas.
 

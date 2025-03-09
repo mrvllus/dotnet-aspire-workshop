@@ -33,7 +33,7 @@
 
 このワークショップの完全なスライドは[こちら](./workshop/localization/jp/AspireWorkshop.pptx)から利用できます。
 
-このワークショップの開始プロジェクトは、`start-with-api` フォルダに格納されています。このプロジェクトは、National Weather Service API を使用して、天気データを取得し、Blazor によって提供される Web フロントエンドで天気データを表示するシンプルな天気 API です。
+このワークショップの開始プロジェクトは、`start` フォルダに格納されています。このプロジェクトは、National Weather Service API を使用して、天気データを取得し、Blazor によって提供される Web フロントエンドで天気データを表示するシンプルな天気 API です。
 
 このワークショップは 2 時間で行うことを想定しています。
 

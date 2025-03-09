@@ -31,6 +31,6 @@
 
 ## 打开研讨会的起始解决方案
 
-在 Visual Studio 2022 中打开 `start-with-api/MyWeatherHub.sln` 解决方案，开始研讨会。如果您在使用 Visual Studio code，打开 `start-with-api` 文件夹，当 C# Dev Kit 提示打开哪个解决方案时，选择 **MyWeatherHub.sln**。
+在 Visual Studio 2022 中打开 `start/MyWeatherHub.sln` 解决方案，开始研讨会。如果您在使用 Visual Studio code，打开 `start` 文件夹，当 C# Dev Kit 提示打开哪个解决方案时，选择 **MyWeatherHub.sln**。
 
 **下一节**: [模块 #2 - Service Defaults](2-servicedefaults.md)
