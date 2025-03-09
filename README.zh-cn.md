@@ -53,7 +53,7 @@
 6. [部署](./workshop/6-deployment.md)
 
 此研讨会的完整幻灯片可[在此处获得](./workshop/AspireWorkshop.pptx)。
-此研讨会的起始项目位于 `start-with-api` 文件夹中。此项目是一个简单的气象 API，它使用国家气象局 API 来获取天气数据，并使用基于 Blazor 的 Web 前端来显示气象数据。
+此研讨会的起始项目位于 `start` 文件夹中。此项目是一个简单的气象 API，它使用国家气象局 API 来获取天气数据，并使用基于 Blazor 的 Web 前端来显示气象数据。
 
 该研讨会设计为在 2 小时内完成。
 

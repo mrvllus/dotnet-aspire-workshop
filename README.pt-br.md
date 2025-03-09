@@ -42,7 +42,7 @@ Este workshop do .NET Aspire faz parte da série [Vamos aprender .NET](https://a
 
 Um conjunto completo de slides está disponível para este workshop [aqui](./workshop/localization/pt-br/AspireWorkshop.pptx).
 
-O projeto inicial para este workshop está localizado na pasta `start-with-api`. Este projeto é uma simples API de clima que usa a API do Serviço Nacional de Meteorologia dos Estados Unidos (NWS) para obter dados meteorológicos e uma interface web para exibir os dados do clima alimentada por Blazor.
+O projeto inicial para este workshop está localizado na pasta `start`. Este projeto é uma simples API de clima que usa a API do Serviço Nacional de Meteorologia dos Estados Unidos (NWS) para obter dados meteorológicos e uma interface web para exibir os dados do clima alimentada por Blazor.
 
 Este workshop foi criado para ser executado em um período de 2 horas.
 

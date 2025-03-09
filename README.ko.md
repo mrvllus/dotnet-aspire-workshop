@@ -35,7 +35,7 @@
 
 이 워크샵을 위한 전체 슬라이드 데크는 [여기](./workshop/localization/ko/AspireWorkshop.pptx)에서 제공합니다.
 
-이 워크샵의 시작 프로젝트는 `start-with-api` 폴더에 있습니다. 이 프로젝트는 National Weather Service API를 사용하여 날씨 데이터를 가져오고 Blazor로 작동하는 웹 프론트엔드를 통해 날씨 데이터를 표시하는 간단한 날씨 API입니다.
+이 워크샵의 시작 프로젝트는 `start` 폴더에 있습니다. 이 프로젝트는 National Weather Service API를 사용하여 날씨 데이터를 가져오고 Blazor로 작동하는 웹 프론트엔드를 통해 날씨 데이터를 표시하는 간단한 날씨 API입니다.
 
 이 워크샵은 2시간 내에 완료하도록 설계했습니다.
 
