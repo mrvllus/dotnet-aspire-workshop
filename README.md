@@ -58,7 +58,7 @@ This .NET Aspire workshop is part of the [Let's Learn .NET](https://aka.ms/letsl
 
 A full slide deck is available for this workshop [here](./workshop/AspireWorkshop.pptx).
 
-The starting project for this workshop is located in the `start-with-api` folder.  This project is a simple weather API that uses the National Weather Service API to get weather data and a web frontend to display the weather data powered by Blazor.
+The starting project for this workshop is located in the `start` folder.  This project is a simple weather API that uses the National Weather Service API to get weather data and a web frontend to display the weather data powered by Blazor.
 
 This workshop is designed to be done in a 2 hour time frame.
 

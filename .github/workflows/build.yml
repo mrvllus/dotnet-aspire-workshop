@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         project:
-        - start-with-api
+        - start
         - complete
 
     steps:
