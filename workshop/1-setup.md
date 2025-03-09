@@ -3,7 +3,6 @@
 This workshop will be using the following tools:
 
 - [.NET 9 SDK](https://get.dot.net/9)
-- OR [.NET 8 SDK](https://get.dot.net/8) with [.NET Aspire Workload](https://learn.microsoft.com/dotnet/aspire/fundamentals/setup-tooling?tabs=dotnet-cli%2Cunix#install-net-aspire)
 - [Docker Desktop](https://docs.docker.com/engine/install/) or [Podman](https://podman.io/getting-started/installation)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) or [Visual Studio Code](https://code.visualstudio.com/) with [C# Dev Kit](https://code.visualstudio.com/docs/csharp/get-started)
 
@@ -15,8 +14,6 @@ For the best experience, we recommend using Visual Studio 2022 with the .NET Asp
   - Any edition will work including the [free to use Visual Studio Community](https://visualstudio.microsoft.com/free-developer-offers/)
   - Select the following `ASP.NET and web development` workload.
 
-> Note: .NET Aspire 8.0 required installing a separate .NET Aspire workload. [In .NET 9, this workload is no longer required](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/upgrade-to-aspire-9?pivots=visual-studio) and can be uninstalled.
-
 ## Mac, Linux, & Windows without Visual Studio
 
 - Install the latest [.NET 9 SDK](https://get.dot.net/9?cid=eshop)
@@ -24,6 +21,14 @@ For the best experience, we recommend using Visual Studio 2022 with the .NET Asp
 - Install [Visual Studio Code with C# Dev Kit](https://code.visualstudio.com/docs/csharp/get-started)
 
 > Note: When running on Mac with Apple Silicon (M series processor), Rosetta 2 for grpc-tools.
+
+## Install Latest .NET Aspire Templates
+
+Run the following command to intall .NET Aspire 9.1 templates.
+
+```cli
+dotnet new install Aspire.ProjectTemplates::9.1.0 --force
+```
 
 ## Test Installation
 
