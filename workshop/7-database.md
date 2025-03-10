@@ -89,6 +89,74 @@ For development environments, we use `EnsureCreatedAsync()` to automatically cre
 
 Now we'll update the web application to support favoriting weather zones and filtering them. Let's make these changes step by step:
 
+1. Make sure to add these Entity Framework using statements at the top of `Home.razor` if they're not already present:
+
+```csharp
+@using Microsoft.EntityFrameworkCore
+@inject MyWeatherContext DbContext
+```
+
+1. Add these new properties to the `@code` block to support the favorites functionality:
+
+```csharp
+bool ShowOnlyFavorites { get; set; }
+List<Zone> FavoriteZones { get; set; } = new List<Zone>();
+```
+
+1. Update the `OnInitializedAsync` method to load favorites from the database. Find the existing method and replace it with:
+
+```csharp
+protected override async Task OnInitializedAsync()
+{
+    AllZones = (await NwsManager.GetZonesAsync()).ToArray();
+    FavoriteZones = await MyWeatherContext.FavoriteZones.ToListAsync();
+}
+```
+
+1. Finally, add the `ToggleFavorite` method to handle saving favorites to the database. Add this method to the `@code` block:
+
+```csharp
+private async Task ToggleFavorite(Zone zone)
+{
+    if (FavoriteZones.Contains(zone))
+    {
+        FavoriteZones.Remove(zone);
+        MyWeatherContext.FavoriteZones.Remove(zone);
+    }
+    else
+    {
+        FavoriteZones.Add(zone);
+        MyWeatherContext.FavoriteZones.Add(zone);
+    }
+    await DbContext.SaveChangesAsync();
+}
+```
+
+1. In the `@code` block of `Home.razor`, locate the `zones` property and replace it with this updated version that includes the favorites filter:
+
+```csharp
+IQueryable<Zone> zones
+{
+    get
+    {
+        var results = AllZones.AsQueryable();
+
+        if (ShowOnlyFavorites)
+        {
+            results = results.Where(z => FavoriteZones.Contains(z));
+        }
+
+        results = string.IsNullOrEmpty(StateFilter) ? results
+                : results.Where(z => z.State == StateFilter.ToUpper());
+
+        results = string.IsNullOrEmpty(NameFilter) ? results
+                : results.Where(z => z.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase));
+
+        return results.OrderBy(z => z.Name);
+    }
+}
+```
+
 1. First, add a checkbox to filter the zones list. In `Home.razor`, add this code just before the `<QuickGrid>` element:
 
 ```csharp
@@ -117,74 +185,6 @@ Now we'll update the web application to support favoriting weather zones and fil
         </button>
     </ChildContent>
 </TemplateColumn>
-```
-
-1. In the `@code` block of `Home.razor`, locate the `zones` property and replace it with this updated version that includes the favorites filter:
-
-```csharp
-IQueryable<Zone> zones
-{
-    get
-    {
-        var results = AllZones.AsQueryable();
-
-        if (ShowOnlyFavorites)
-        {
-            results = results.Where(z => FavoriteZones.Contains(z));
-        }
-
-        results = string.IsNullOrEmpty(StateFilter) ? results
-                : results.Where(z => z.State == StateFilter.ToUpper());
-
-        results = string.IsNullOrEmpty(NameFilter) ? results
-                : results.Where(z => z.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase));
-
-        return results.OrderBy(z => z.Name);
-    }
-}
-```
-
-1. Add these new properties to the `@code` block to support the favorites functionality:
-
-```csharp
-bool ShowOnlyFavorites { get; set; }
-List<Zone> FavoriteZones { get; set; } = new List<Zone>();
-```
-
-1. Update the `OnInitializedAsync` method to load favorites from the database. Find the existing method and replace it with:
-
-```csharp
-protected override async Task OnInitializedAsync()
-{
-    AllZones = (await NwsManager.GetZonesAsync()).ToArray();
-    FavoriteZones = await DbContext.FavoriteZones.ToListAsync();
-}
-```
-
-1. Finally, add the `ToggleFavorite` method to handle saving favorites to the database. Add this method to the `@code` block:
-
-```csharp
-private async Task ToggleFavorite(Zone zone)
-{
-    if (FavoriteZones.Contains(zone))
-    {
-        FavoriteZones.Remove(zone);
-        DbContext.FavoriteZones.Remove(zone);
-    }
-    else
-    {
-        FavoriteZones.Add(zone);
-        DbContext.FavoriteZones.Add(zone);
-    }
-    await DbContext.SaveChangesAsync();
-}
-```
-
-Make sure to add these Entity Framework using statements at the top of `Home.razor` if they're not already present:
-
-```csharp
-@using Microsoft.EntityFrameworkCore
-@inject MyWeatherContext DbContext
 ```
 
 ## Testing Your Changes
