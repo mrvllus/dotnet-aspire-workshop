@@ -25,12 +25,12 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.UseHttpsRedirection();
-
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseHttpsRedirection();
 
 // Map the endpoints for the API
 app.MapApiEndpoints();

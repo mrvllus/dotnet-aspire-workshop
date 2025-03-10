@@ -12,16 +12,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 // Map the endpoints for the API
 app.MapApiEndpoints();
