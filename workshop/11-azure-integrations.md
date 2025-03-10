@@ -48,15 +48,15 @@ Let's build a fun little weather application that combines Azure Functions with 
 #### Using Visual Studio 2022
 
 1. Fire up Visual Studio 2022 and click **Create a new project**.
-2. In the search box, type "aspire" and pick the **.NET Aspire Application** template.
+2. In the search box, type "aspire" and pick the **.NET Aspire Starter Application** template.
 3. Click **Next**.
 4. Fill in the project details:
    - Project name: `AzureIntegrationDemo`
    - Choose your favorite location
    - Solution name: `AzureIntegrationDemo`
-5. Click **Next**.
-6. Check the **API service** box to include it in your application.
-7. Click **Create** and let Visual Studio work its magic!
+   - Use Redis: No (unchecked)
+   - Create a test project: None
+7. Click **Create**
 
 Your solution now contains:
 - `AzureIntegrationDemo.AppHost` - Your orchestrator project
@@ -64,7 +64,7 @@ Your solution now contains:
 - `AzureIntegrationDemo.Web` - A frontend web app
 - `AzureIntegrationDemo.ApiService` - Your API backend
 
-#### Using Command Line (for the terminal enthusiasts)
+#### Using Command Line
 
 1. Open your favorite terminal and run:
 
