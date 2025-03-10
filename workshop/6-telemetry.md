@@ -68,11 +68,12 @@ Our custom metrics track several key aspects of the weather service:
 - **Cache Performance**: Cache hit and miss rates
 - **Distributed Tracing**: Activity source for following requests
 
-3. Register the custom meter in Program.cs:
+3. Register the custom meter and activity source in Program.cs:
 
 ```csharp
 builder.Services.AddOpenTelemetry()
-    .WithMetrics(m => m.AddMeter("NwsManagerMetrics"));
+    .WithMetrics(m => m.AddMeter("NwsManagerMetrics"))
+    .WithTracing(m => m.AddSource("NwsManager"));
 ```
 
 ## Implementing Telemetry in NwsManager
