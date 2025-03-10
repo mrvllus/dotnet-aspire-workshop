@@ -26,52 +26,64 @@
 <h2>Live Weather reports from the US National Weather service</h2>
 
 <div class="row">
-<div class="col-md-6">
-	<QuickGrid Items="zones" TGridItem="Zone" Pagination="pagination">
-		<TemplateColumn Title="Name" SortBy="NameSort" Sortable="true">
-			<ColumnOptions>
-				<div class="search-box">
-					<input type="search" autofocus @bind="NameFilter" @bind:event="oninput" placeholder="Name..." />
-				</div>
-			</ColumnOptions>
-			<ChildContent>
-				<span class="link-primary @(SelectedZone == context ? "selectedCell" : "")" style="cursor: pointer;" @onclick="@(() => SelectZone(context))">@context.Name</span>
-			</ChildContent>
-		</TemplateColumn>
-		<TemplateColumn Title="State">
-			<ColumnOptions>
-				<div class="search-box">
-					<input type="search" autofocus @bind="StateFilter" @bind:event="oninput" placeholder="State..." />
-				</div>
-			</ColumnOptions>
-			<ChildContent>
-				<span class="@(SelectedZone == context ? "selectedCell" : "")">@context.State</span>
-			</ChildContent>
-		</TemplateColumn>
-		<TemplateColumn Title="Favorite">
-			<ChildContent>
-				<button @onclick="@(() => ToggleFavorite(context))">
-					@if (FavoriteZones.Contains(context))
-					{
-						<span>&#9733;</span> <!-- Starred -->
-					}
-					else
-					{
-						<span>&#9734;</span> <!-- Unstarred -->
-					}
-				</button>
-			</ChildContent>
-		</TemplateColumn>
-	</QuickGrid>
-	<Paginator State="@pagination"></Paginator>
-</div>
+	<div class="col-md-6">
+		<div class="form-check mb-3">
+			<input class="form-check-input" type="checkbox" @bind="ShowOnlyFavorites" id="showFavorites">
+			<label class="form-check-label" for="showFavorites">
+				Show only favorites
+			</label>
+		</div>
+		<QuickGrid Items="zones" TGridItem="Zone" Pagination="pagination">
+			<TemplateColumn Title="Name" SortBy="NameSort" Sortable="true">
+				<ColumnOptions>
+					<div class="search-box">
+						<input type="search" autofocus @bind="NameFilter" @bind:event="oninput" placeholder="Name..." />
+					</div>
+				</ColumnOptions>
+				<ChildContent>
+					<span class="link-primary @(SelectedZone == context ? "selectedCell" : "")" style="cursor: pointer;"
+						@onclick="@(() => SelectZone(context))">@context.Name</span>
+				</ChildContent>
+			</TemplateColumn>
+			<TemplateColumn Title="State">
+				<ColumnOptions>
+					<div class="search-box">
+						<input type="search" autofocus @bind="StateFilter" @bind:event="oninput"
+							placeholder="State..." />
+					</div>
+				</ColumnOptions>
+				<ChildContent>
+					<span class="@(SelectedZone == context ? "selectedCell" : "")">@context.State</span>
+				</ChildContent>
+			</TemplateColumn>
+			<TemplateColumn Title="Favorite">
+				<ChildContent>
+					<button @onclick="@(() => ToggleFavorite(context))">
+						@if (FavoriteZones.Contains(context))
+						{
+							<span>&#9733;</span> <!-- Starred -->
+						}
+						else
+						{
+							<span>&#9734;</span> <!-- Unstarred -->
+						}
+					</button>
+				</ChildContent>
+			</TemplateColumn>
+		</QuickGrid>
+		<Paginator State="@pagination"></Paginator>
+	</div>
 
-<div class="col-md-6" style="max-width:30em;">
-	<p>Click the name of a weather zone from the <a href="https://www.weather.gov/documentation/services-web-api" target="_blank">US National Weather Service</a> and the upcoming weather for that zone will appear below.</p>
-	<p>You can sort and filter the list of available weather forecast zones using the column headers of the grid.</p>
-	<p>Not all forecast zones will have a forecast available.  For reliable zones, try Philadelphia, Manhattan, District of Columbia, or Los Angeles County San Gabriel Valley</p>
-	<p>For a zone that isn't reliably reporting, try Bristol Bay, AK (Alaska)</p>
-</div>
+	<div class="col-md-6" style="max-width:30em;">
+		<p>Click the name of a weather zone from the <a href="https://www.weather.gov/documentation/services-web-api"
+				target="_blank">US National Weather Service</a> and the upcoming weather for that zone will appear
+			below.</p>
+		<p>You can sort and filter the list of available weather forecast zones using the column headers of the grid.
+		</p>
+		<p>Not all forecast zones will have a forecast available. For reliable zones, try Philadelphia, Manhattan,
+			District of Columbia, or Los Angeles County San Gabriel Valley</p>
+		<p>For a zone that isn't reliably reporting, try Bristol Bay, AK (Alaska)</p>
+	</div>
 
 </div>
 
@@ -103,7 +115,8 @@ else if (SelectedZone != null && Forecast != null)
 }
 else if (SelectedZone != null && !string.IsNullOrEmpty(Error))
 {
-	<div class="alert-danger border border-1 border-danger p-3" style="width: 30em">@Error<br />Choose another weather station</div>
+	<div class="alert-danger border border-1 border-danger p-3" style="width: 30em">@Error<br />Choose another weather
+		station</div>
 }
 
 @code {
@@ -112,18 +125,20 @@ else if (SelectedZone != null && !string.IsNullOrEmpty(Error))
 	{
 		get
 		{
-			var results = AllZones
-				.AsQueryable();
+			var results = AllZones.AsQueryable();
+
+			if (ShowOnlyFavorites)
+			{
+				results = results.Where(z => FavoriteZones.Contains(z));
+			}
 
 			results = string.IsNullOrEmpty(StateFilter) ? results.AsQueryable()
-					: results.Where(z => z.State == StateFilter.ToUpper()).AsQueryable();
+			: results.Where(z => z.State == StateFilter.ToUpper()).AsQueryable();
 
 			results = string.IsNullOrEmpty(NameFilter) ? results
-					: results.Where(z => z.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase));
+			: results.Where(z => z.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase));
 
-			results = results.OrderByDescending(z => FavoriteZones.Contains(z)).ThenBy(z => z.Name);
-
-			return results;
+			return results.OrderBy(z => z.Name);
 		}
 	}
 
@@ -136,7 +151,7 @@ else if (SelectedZone != null && !string.IsNullOrEmpty(Error))
 	string StateFilter { get; set; } = string.Empty;
 
 	GridSort<Zone> NameSort = GridSort<Zone>
-			.ByAscending(f => f.Name);
+	.ByAscending(f => f.Name);
 
 	Zone SelectedZone { get; set; } = null!;
 
@@ -146,12 +161,14 @@ else if (SelectedZone != null && !string.IsNullOrEmpty(Error))
 
 	bool IsLoading = false;
 
+	bool ShowOnlyFavorites { get; set; }
+
 	List<Zone> FavoriteZones { get; set; } = new List<Zone>();
 
 	protected override async Task OnInitializedAsync()
 	{
 		AllZones = (await NwsManager.GetZonesAsync()).ToArray();
-        FavoriteZones = await DbContext.FavoriteZones.ToListAsync();
+		FavoriteZones = await DbContext.FavoriteZones.ToListAsync();
 	}
 
 	private async Task SelectZone(Zone zone)
