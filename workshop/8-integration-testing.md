@@ -12,7 +12,7 @@ In the context of distributed applications with .NET Aspire, integration testing
 
 ## Creating the Integration Test Project
 
-1. Create a new test project named `IntegrationTests` in the `complete` folder.
+1. Create a new test project named `IntegrationTests`.
 1. Add references to the required packages in the `IntegrationTests.csproj` file:
 
 ```xml
