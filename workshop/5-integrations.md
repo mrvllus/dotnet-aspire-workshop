@@ -125,4 +125,4 @@ There are many more Aspire integrations available that you can use to integrate 
 
 A natural next step would be to integrate a database or leverage Azure Redis Cache as a hosted solution. Integrations for these and more are [available on NuGet](https://www.nuget.org/packages?q=owner%3Aaspire+tags%3Aintegration).
 
-**Next**: [Module #6: Deployment](6-deployment.md)
+**Next**: [Module #6: Telemetry](6-telemetry.md)
