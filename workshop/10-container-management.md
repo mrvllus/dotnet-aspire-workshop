@@ -115,36 +115,6 @@ var cache = builder.AddRedis("cache")
 
 This tells Redis: "Take a snapshot every 5 minutes OR when 100 keys have changed - whichever happens first."
 
-## The Ultimate Redis Configuration
-
-Let's put everything together for a production-quality Redis configuration:
-
-```csharp
-var cache = builder.AddRedis("cache")
-    .WithRedisCommander(commander => commander
-        .WithEnvironment("HTTP_USER", "admin")
-        .WithEnvironment("HTTP_PASSWORD", "aspire_demo"))
-    .WithLifetime(ContainerLifetime.Persistent)
-    .WithDataVolume("my-redis-data")
-    .WithPersistence(interval: TimeSpan.FromMinutes(5), keysChangedThreshold: 100)
-    .WithRestartPolicy(RestartPolicy.Always)
-    .WithEnvironment("REDIS_ARGS", "--maxmemory 256mb --maxmemory-policy allkeys-lru")
-    .WithContainerResourcesLimit(
-        cpuCores: 0.5,
-        memoryInMB: 512)
-    .WithIsolation(IsolationLevel.Container);
-```
-
-Look at all these goodies:
-- Persistent container that survives debugging sessions
-- Named volume for data persistence
-- Redis snapshots every 5 minutes or 100 key changes
-- Automatic restart if Redis crashes
-- Memory limit of 256MB with LRU eviction policy
-- Resource limits to prevent Redis from hogging your system
-- Network isolation for security
-- Password-protected Redis Commander dashboard
-
 ## Controlling Resources from the Dashboard
 
 One of the coolest features in .NET Aspire 9 is the ability to control your resources directly from the dashboard. Let's try it out:
