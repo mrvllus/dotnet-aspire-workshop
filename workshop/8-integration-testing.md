@@ -218,3 +218,7 @@ For more information on Playwright, refer to the [official documentation](https:
 In this module, we covered integration testing using `Aspire.Hosting.Testing` with `MSTest`. We created a separate test project to test both the API and the web application. Additionally, we explained the use of Playwright for end-to-end testing. Integration testing is essential for ensuring that different parts of your application work together as expected, and Playwright provides a powerful tool for end-to-end testing.
 
 For a deeper dive into testing with .NET Aspire, including a video walkthrough, check out the [Getting started with testing and .NET Aspire](https://devblogs.microsoft.com/dotnet/getting-started-with-testing-and-dotnet-aspire/) blog post.
+
+Now, let's learn about deployment options when using .NET Aspire.
+
+**Next**: [Module #9: Deployment](./9-deployment.md)
