@@ -152,6 +152,9 @@ One of the coolest features in .NET Aspire 9 is the ability to control your reso
 1. Start your App Host project
 2. Open the .NET Aspire Dashboard
 3. Look for the Redis resource - notice the little pin icon? That's showing it's persistent!
+
+![Persistent Container](./media/aspire-pin.png)
+
 4. Click the "Stop" button to stop your Redis container
 5. Watch how your application reacts (spoiler: it probably won't handle it well!)
 6. Click "Start" to bring Redis back to life
