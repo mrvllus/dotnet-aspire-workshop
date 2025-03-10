@@ -55,7 +55,7 @@ This project file is fairly standard for a test project. The key elements are:
 - A `ProjectReference` to the AppHost project, which gives the test project access to the target distributed application definition.
 - The `EnableMSTestRunner` and `OutputType` settings to configure the test project to run with the native MSTest runner.
 
-3. Create test classes for integration tests:
+1. Create test classes for integration tests:
 
 The `IntegrationTests.cs` file tests the API and web application functionality:
 
