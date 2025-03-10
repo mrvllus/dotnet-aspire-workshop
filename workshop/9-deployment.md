@@ -166,5 +166,3 @@ Run the following Azure CLI command to delete the resource group when you no lon
 ```console
 az group delete --name <your-resource-group-name>
 ```
-
-**Next**: [Module #7: Telemetry](7-telemetry.md)
