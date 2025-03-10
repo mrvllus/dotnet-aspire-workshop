@@ -49,7 +49,13 @@ In the context of distributed applications with .NET Aspire, integration testing
 </Project>
 ```
 
-1. Create test classes for integration tests:
+This project file is fairly standard for a test project. The key elements are:
+
+- A `PackageReference` to the [Aspire.Hosting.Testing](https://www.nuget.org/packages/Aspire.Hosting.Testing) NuGet package, which provides the necessary types and APIs for testing .NET Aspire applications.
+- A `ProjectReference` to the AppHost project, which gives the test project access to the target distributed application definition.
+- The `EnableMSTestRunner` and `OutputType` settings to configure the test project to run with the native MSTest runner.
+
+3. Create test classes for integration tests:
 
 The `IntegrationTests.cs` file tests the API and web application functionality:
 
@@ -136,6 +142,17 @@ public class IntegrationTests
 public record Zone(string Key, string Name, string State);
 ```
 
+This test class demonstrates how to test your distributed application. Let's examine what these tests are doing:
+
+- Both tests follow a similar pattern, utilizing `DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>()` to asynchronously create an instance of your application host.
+- The `appHost` is configured with standard HTTP resilience handlers, which provide retry policies and circuit breakers for more robust HTTP communication.
+- The test calls `appHost.BuildAsync()` to build the application and then retrieves the `ResourceNotificationService` from the DI container.
+- After starting the app with `app.StartAsync()`, an `HttpClient` is created specifically for the resource being tested (either "api" or "myweatherhub").
+- The test waits for the target resource to reach the "Running" state before proceeding, ensuring the service is ready to accept requests.
+- Finally, HTTP requests are made to specific endpoints, and assertions verify the responses.
+
+In the first test, we verify that the API's `/zones` endpoint returns a valid collection of zone data. In the second test, we check that the web application's homepage loads successfully and contains the expected content.
+
 The `EnvVarTests.cs` file verifies environment variable resolution:
 
 ```csharp
@@ -167,6 +184,15 @@ public class EnvVarTests
 }
 ```
 
+This test focuses on verifying service discovery configuration:
+
+- It uses `DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>()` to create an instance of the application host.
+- Instead of starting the application, it directly retrieves an `IResourceWithEnvironment` instance representing the web frontend ("myweatherhub").
+- It calls `GetEnvironmentVariableValuesAsync()` with the `DistributedApplicationOperation.Publish` argument to get the environment variables that would be published to the resource.
+- Finally, it asserts that the web frontend has an environment variable that resolves to the API service's URL, confirming that service discovery is properly configured.
+
+This test is particularly valuable because it verifies that your application's services are correctly wired together through environment variables, which is how .NET Aspire handles service discovery in distributed applications.
+
 ## Running the Integration Tests
 
 ### Using the Command Line
@@ -183,6 +209,9 @@ dotnet test IntegrationTests/IntegrationTests.csproj
 1. Open the solution in Visual Studio
 1. Open the Test Explorer by going to View > Test Explorer (or press Ctrl+E, T)
 1. In the Test Explorer window, you'll see all the tests in your solution
+
+![Visual Studio Test Explorer](./media/vs-test-explorer.png)
+
 1. You can:
    - Run all tests by clicking the "Run All" button at the top
    - Run a specific test by right-clicking it and selecting "Run"
@@ -195,6 +224,8 @@ The tests will verify that:
 - Environment variables are properly configured
 - The API endpoints are working correctly
 - The web application is functioning as expected
+
+When running these tests, all resource logs are redirected to the `DistributedApplication` by default. This log redirection enables scenarios where you want to assert that a resource is logging correctly, though we're not doing that in these particular tests.
 
 ## Additional Testing Tools
 
@@ -215,7 +246,12 @@ For more information on Playwright, refer to the [official documentation](https:
 
 ## Conclusion
 
-In this module, we covered integration testing using `Aspire.Hosting.Testing` with `MSTest`. We created a separate test project to test both the API and the web application. Additionally, we explained the use of Playwright for end-to-end testing. Integration testing is essential for ensuring that different parts of your application work together as expected, and Playwright provides a powerful tool for end-to-end testing.
+In this module, we covered integration testing using `Aspire.Hosting.Testing` with `MSTest`. We created a separate test project to test both the API and the web application, following patterns similar to the `WebApplicationFactory` approach in ASP.NET Core but adapted for distributed applications.
+
+Our tests verified three critical aspects of the distributed application:
+1. The API functionality (testing that endpoints return expected data)
+2. The web application functionality (testing that the UI renders correctly)
+3. The service discovery mechanism (testing that services can find and communicate with each other)
 
 For a deeper dive into testing with .NET Aspire, including a video walkthrough, check out the [Getting started with testing and .NET Aspire](https://devblogs.microsoft.com/dotnet/getting-started-with-testing-and-dotnet-aspire/) blog post.
 
