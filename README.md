@@ -51,10 +51,10 @@ This .NET Aspire workshop is part of the [Let's Learn .NET](https://aka.ms/letsl
 1. [Developer Dashboard & Orchestration](./workshop/3-dashboard-apphost.md)
 1. [Service Discovery](./workshop/4-servicediscovery.md)
 1. [Integrations](./workshop/5-integrations.md)
-1. [Deployment](./workshop/6-deployment.md)
-1. [Telemetry Module](./workshop/7-telemetry.md)
-1. [Database Module](./workshop/8-database.md)
-1. [Integration Testing](./workshop/9-integration-testing.md)
+1. [Telemetry Module](./workshop/6-telemetry.md)
+1. [Database Module](./workshop/7-database.md)
+1. [Integration Testing](./workshop/8-integration-testing.md)
+1. [Deployment](./workshop/9-deployment.md)
 
 A full slide deck is available for this workshop [here](./workshop/AspireWorkshop.pptx).
 
