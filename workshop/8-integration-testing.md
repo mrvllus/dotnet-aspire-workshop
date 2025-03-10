@@ -250,8 +250,8 @@ In this module, we covered integration testing using `Aspire.Hosting.Testing` wi
 
 Our tests verified three critical aspects of the distributed application:
 1. The API functionality (testing that endpoints return expected data)
-2. The web application functionality (testing that the UI renders correctly)
-3. The service discovery mechanism (testing that services can find and communicate with each other)
+1. The web application functionality (testing that the UI renders correctly)
+1. The service discovery mechanism (testing that services can find and communicate with each other)
 
 For a deeper dive into testing with .NET Aspire, including a video walkthrough, check out the [Getting started with testing and .NET Aspire](https://devblogs.microsoft.com/dotnet/getting-started-with-testing-and-dotnet-aspire/) blog post.
 
