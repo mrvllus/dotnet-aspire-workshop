@@ -90,31 +90,22 @@ Now let's add some serverless capabilities with Azure Functions!
 3. Click **Next**.
 4. Name it `AzureIntegrationDemo.Functions` and click **Next**.
 5. Choose these settings:
-   - Functions worker: `.NET Isolated` (the new hotness!)
-   - Function template: `HTTP trigger` (we'll start simple)
-   - Authentication level: `Function` (security first!)
+   - Functions worker: `.NET Isolated`
+   - Function template: `HTTP trigger`
+   - Enlist in .NET Aspire Orchestration: Checked
+   - Authentication level: `Function`
 6. Click **Create** to add your Functions project.
-
-7. Let's connect our Functions project to our Aspire world:
-   - Right-click on the Functions project and select **Add** > **Project Reference**
-   - Check the box for `AzureIntegrationDemo.ServiceDefaults`
-   - Click **OK**
-
-8. Open the Functions `Program.cs` file and add these Aspire superpowers:
+7. Add a reference from the Azure Functions project to **AzureIntegrationDemo.ServiceDefaults** project
+8. Open the Functions `Program.cs` file to set up .NET Aspire:
 
    ```csharp
+   using Microsoft.Azure.Functions.Worker.Builder;
    using Microsoft.Extensions.Hosting;
-   using Microsoft.Extensions.DependencyInjection;
 
-   var host = new HostBuilder()
-       .ConfigureFunctionsWorkerDefaults()
-       .ConfigureServices(services =>
-       {
-           services.AddServiceDefaults(); // Aspire magic happening here!
-       })
-       .Build();
-
-   await host.RunAsync();
+   var builder = FunctionsApplication.CreateBuilder(args);
+   builder.AddServiceDefaults();
+   builder.ConfigureFunctionsWebApplication();
+   builder.Build().Run();
    ```
 
 9. Find the HTTP trigger function file that was created for you, rename it to `WeatherFunction.cs`, and update it with:
@@ -190,22 +181,29 @@ Now, let's make our Functions project a full-fledged citizen in our Aspire appli
 
 #### Visual Studio Path
 
-1. Right-click on the AppHost project and add a reference to the Functions project
-2. Open the `Program.cs` file in the AppHost project and update it:
+1. Right-click on the AppHost project and add a reference to the Functions project.
+1. In the AppHost project, add a reference to the `Aspire.Hosting.Azure.Functions` package:
+```bash
+dotnet add package Aspire.Hosting.Azure.Functions --prerelease
+```   
+1. Open the `Program.cs` file in the AppHost project and update it:
 
    ```csharp
-   var builder = DistributedApplication.CreateBuilder(args);
+    var builder = DistributedApplication.CreateBuilder(args);
 
-   var apiService = builder.AddProject<Projects.AzureIntegrationDemo_ApiService>("apiservice");
+    var apiService = builder.AddProject<Projects.AzureIntegrationDemo_ApiService>("apiservice");
 
-   var functions = builder.AddAzureFunctionsProject<Projects.AzureIntegrationDemo_Functions>("functions")
-       .WithHttpEndpoint(); // This makes our function available via HTTP
+    var functions = builder .AddAzureFunctionsProject<Projects.AzureIntegrationDemo_Functions>("functions")
+        .WithHttpEndpoint(name: "functions-http"); // This makes our function available via HTTP
 
-   builder.AddProject<Projects.AzureIntegrationDemo_Web>("webfrontend")
-       .WithReference(apiService)
-       .WithReference(functions); // Let the web frontend talk to our functions
+    builder.AddProject<Projects.AzureIntegrationDemo_Web>("webfrontend")
+        .WithExternalHttpEndpoints()
+        .WithReference(apiService)
+        .WaitFor(apiService)
+        .WithReference(functions)
+        .WaitFor(functions);
 
-   builder.Build().Run();
+    builder.Build().Run();
    ```
 
 #### Command Line Path
@@ -218,57 +216,50 @@ Now, let's make our Functions project a full-fledged citizen in our Aspire appli
 
 2. Update the AppHost's Program.cs file as shown above.
 
-## Adding Cosmic Powers with Cosmos DB
+## Adding Cosmos DB
 
 Now it's time to add some persistent data storage with Azure Cosmos DB. The coolest part? We'll use the Cosmos DB Emulator locally, which means no Azure account needed for development!
 
 ### Visual Studio Path
 
-1. Right-click on your Functions project and select **Manage NuGet Packages**
-2. Search for and install:
-   - `Aspire.Microsoft.Azure.Cosmos` (the Aspire integration)
-   - `Microsoft.Azure.Cosmos` (the SDK)
-
-3. Let's update our AppHost to include Cosmos DB:
+1. Right-click on your AppHost project and select **Manage NuGet Packages**
+1. Search for and install `Aspire.Hosting.Azure.CosmosDB` 
+1. Let's update our AppHost to include Cosmos DB:
 
    ```csharp
-   var builder = DistributedApplication.CreateBuilder(args);
+    var builder = DistributedApplication.CreateBuilder(args);
 
-   var cosmos = builder.AddAzureCosmosDB("cosmosdb") // Add Cosmos DB emulator
-       .AddDatabase("weatherdb");
+    var cosmos = builder.AddAzureCosmosDB("cosmos-db");
 
-   var apiService = builder.AddProject<Projects.AzureIntegrationDemo_ApiService>("apiservice");
+    var apiService = builder.AddProject<Projects.AzureIntegrationDemo_ApiService>("apiservice");
 
-   var functions = builder.AddAzureFunctionsProject<Projects.AzureIntegrationDemo_Functions>("functions")
-       .WithReference(cosmos) // Connect Functions to Cosmos
-       .WithHttpEndpoint();
+    var functions = builder.AddAzureFunctionsProject<Projects.AzureIntegrationDemo_Functions>("functions")
+        .WithReference(cosmos)
+        .WithHttpEndpoint(name: "functions-http"); // This makes our function available via HTTP
 
-   builder.AddProject<Projects.AzureIntegrationDemo_Web>("webfrontend")
-       .WithReference(apiService)
-       .WithReference(functions);
+    builder.AddProject<Projects.AzureIntegrationDemo_Web>("webfrontend")
+        .WithExternalHttpEndpoints()
+        .WithReference(apiService)
+        .WaitFor(apiService)
+        .WithReference(functions)
+        .WaitFor(functions);
 
-   builder.Build().Run();
+    builder.Build().Run();  
    ```
-
-4. Now let's update our Functions project to use Cosmos DB:
+1. Add the `Aspire.Microsoft.Azure.Cosmos` to the Functions project:
+1. Now let's update the `Program.cs` file of our Functions project to use Cosmos DB:
 
    ```csharp
-   using Microsoft.Extensions.Hosting;
-   using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Azure.Functions.Worker.Builder;
+    using Microsoft.Extensions.Hosting;
 
-   var host = new HostBuilder()
-       .ConfigureFunctionsWorkerDefaults()
-       .ConfigureServices(services =>
-       {
-           services.AddServiceDefaults();
-           services.AddAzureCosmosDBClient("cosmosdb"); // Get Cosmos DB client
-       })
-       .Build();
-
-   await host.RunAsync();
+    var builder = FunctionsApplication.CreateBuilder(args);
+    builder.AddServiceDefaults();
+    builder.AddAzureCosmosClient(connectionName: "cosmos-db");
+    builder.ConfigureFunctionsWebApplication();
+    builder.Build().Run();
    ```
-
-5. Let's add a data model for our weather data. Create a `WeatherData.cs` file:
+1. Let's add a data model for our weather data. Create a `WeatherData.cs` file:
 
    ```csharp
    namespace AzureIntegrationDemo.Functions;
@@ -283,7 +274,7 @@ Now it's time to add some persistent data storage with Azure Cosmos DB. The cool
    }
    ```
 
-6. Now let's create a repository to work with Cosmos DB. Add a `WeatherRepository.cs` file:
+1. Now let's create a repository to work with Cosmos DB. Add a `WeatherRepository.cs` file:
 
    ```csharp
    using Microsoft.Azure.Cosmos;
