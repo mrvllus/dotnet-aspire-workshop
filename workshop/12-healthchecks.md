@@ -195,7 +195,23 @@ app.UseWhen(context => !context.Request.Path.StartsWithSegments("/health"),
   builder => builder.UseHttpsRedirection());
 ```
 
-### Step 5: Run the app, enjoy your new HealthChecksUI
+### Step 5: Add the HealthChecksUI resource
+
+The `HealthChecksUIResource.cs` file that was added to the AppHost project contains all of the information needed to start a HealthChecks container and connect our projects to it.  This may be wrapped up into a proper .NET Aspire integration in the future that can be installed with a NuGet package, but for now the logic and configuration is all wrapped up in that file.
+
+We can instruct .NET Aspire to start the HealthChecksUI and configure it to listen to the MyWeatherHub and Api projects with this code.  Add this to the end of `Program.cs` just about the `builder.Build().Run();` statement:
+
+```csharp
+builder.AddHealthChecksUI("healthchecks")
+  .WaitFor(web)
+  .WithReference(web)
+  .WaitFor(api)
+  .WithReference(api);
+```
+
+We want to add the HealthChecksUI resource using a name of "healthchecks" and we want it to connect to the `web` and `api` projects after they are running.
+
+### Step 6: Run the app, enjoy your new HealthChecksUI
 
 Run your application, and visit the new HealthChecks resource from the dashboard.  You could see this more complete review of your application's health monitoring and child object statuses:
 
