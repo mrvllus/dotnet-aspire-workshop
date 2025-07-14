@@ -1,10 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache")
-									 .WithRedisInsight();
+									 .WithRedisCommander();
 
-var api = builder.AddProject<Projects.Api>("api")//;
-.WithReference(cache);
+var api = builder.AddProject<Projects.Api>("api")
+								 .WithReference(cache);
 
 var postgres = builder.AddPostgres("postgres")
 								.WithDataVolume(isReadOnly: false);
@@ -16,7 +16,6 @@ var web = builder.AddProject<Projects.MyWeatherHub>("myweatherhub")
 								 .WithReference(weatherDb)
 								 .WaitFor(postgres)
 								 .WithExternalHttpEndpoints();
-
 
 builder.AddHealthChecksUI("healthchecks")
 .WaitFor(web)
