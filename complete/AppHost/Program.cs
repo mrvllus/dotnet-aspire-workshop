@@ -1,10 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache")
-									 .WithRedisCommander();
+									 .WithRedisInsight();
 
-var api = builder.AddProject<Projects.Api>("api")
-								 .WithReference(cache);
+var api = builder.AddProject<Projects.Api>("api")//;
+.WithReference(cache);
 
 var postgres = builder.AddPostgres("postgres")
 								.WithDataVolume(isReadOnly: false);
