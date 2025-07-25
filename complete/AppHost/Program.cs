@@ -1,10 +1,14 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+var invalidationKey = builder.AddParameter("ApiCacheInvalidationKey");	
+
 var cache = builder.AddRedis("cache")
-									 .WithRedisCommander();
+	.WithClearCommand()
+	.WithRedisInsight();
 
 var api = builder.AddProject<Projects.Api>("api")
-								 .WithReference(cache);
+	.WithApiCacheInvalidation(invalidationKey)
+	.WithReference(cache);
 
 var postgres = builder.AddPostgres("postgres")
 								.WithDataVolume(isReadOnly: false);

@@ -55,6 +55,7 @@ This .NET Aspire workshop is part of the [Let's Learn .NET](https://aka.ms/letsl
 1. [Database Module](./workshop/7-database.md)
 1. [Integration Testing](./workshop/8-integration-testing.md)
 1. [Deployment](./workshop/9-deployment.md)
+1. [Custom Commands](./workshop/12-custom-commands.md)
 
 A full slide deck is available for this workshop [here](./workshop/AspireWorkshop.pptx).
 
