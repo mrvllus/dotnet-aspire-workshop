@@ -21,4 +21,11 @@ var web = builder.AddProject<Projects.MyWeatherHub>("myweatherhub")
 								 .WaitFor(postgres)
 								 .WithExternalHttpEndpoints();
 
+builder.AddHealthChecksUI("healthchecks")
+.WaitFor(web)
+.WithReference(web)
+.WaitFor(api)
+.WithReference(api);
+
+
 builder.Build().Run();
