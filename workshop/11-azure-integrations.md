@@ -517,3 +517,5 @@ Congratulations! You've successfully:
 - Discovered how to generate infrastructure as code
 
 With these skills, you're ready to build cloud-native applications that work seamlessly both in development and in Azure. Happy cloud computing!
+
+**Next**: [Module #12: Custom Commands](12-custom-commands.md)

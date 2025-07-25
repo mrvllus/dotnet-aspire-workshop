@@ -229,3 +229,7 @@ A more complete [HealthChecks UI sample](https://github.com/dotnet/aspire-sample
 ### HealthChecks and Security
 
 We strongly recommend adding caching, timeouts, and security to all of your healthchecks endpoints and user interfaces before publishing them to the public internet.  The sample as demonstrated here is not recommended for production use.  Consult the links above for more information about securing health check endpoints
+
+## Congratulations! 🎉
+
+You've completed the .NET Aspire Workshop! Throughout these modules, you've learned how to build, configure, and manage cloud-native applications using .NET Aspire. You now have the skills to create resilient, observable, and scalable distributed applications.
