@@ -263,19 +263,7 @@ Each folder contains multiple background images that the AI will randomly select
    - Dynamic background selection based on AI analysis
    - The display showing which background the AI selected
 
-## 🔧 Configuration and Customization
-
-### Environment Variables
-
-Configure GitHub Models through environment variables or user secrets:
-
-```json
-{
-  "ConnectionStrings": {
-    "chat-model": "Endpoint=https://models.inference.ai.azure.com;Key=your-github-token"
-  }
-}
-```
+## 🔧 Customization
 
 ### Customizing the AI Prompt
 
