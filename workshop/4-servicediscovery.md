@@ -91,10 +91,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 // Reference an external API service
 var weatherApi = builder.AddExternalService("weather-api", "https://api.weather.gov");
 
+...
+
 // Your services can reference external services just like internal ones
 var api = builder.AddProject<Projects.Api>("api")
-    .WithReference(sharedDatabase);
+    .WithReference(weatherApi);
 ```
+
+
 
 ![Dashboard with the additional external resource](media/external-service-resource.png)
 
@@ -107,6 +111,31 @@ var api = builder.AddProject<Projects.Api>("api")
 - **Deployment Awareness**: External services are included in deployment manifests
 
 This feature bridges the gap between your Aspire-managed services and the broader ecosystem of services your application depends on.
+
+## Updating the API to Use the External Service
+
+Now that we've defined the external weather API service in our AppHost, we need to update the API project to use service discovery to connect to it. The `Api` project already has an `NwsManager` class that makes HTTP requests to the National Weather Service.
+
+1. Open the `NwsManager.cs` file in the `Api/Data` folder.
+1. Locate the `AddNwsManager` extension method around line 130.
+1. Update that the `HttpClient` to use `https://weather-api/` as the base address instead of api.weather.gov:
+
+    ```csharp
+    services.AddHttpClient<Api.NwsManager>(client =>
+    {
+        client.BaseAddress = new Uri("https://weather-api/");
+        client.DefaultRequestHeaders.Add("User-Agent", "Microsoft - .NET Aspire Demo");
+    });
+
+    ...
+
+    var zoneIdSegment = HttpUtility.UrlEncode(zoneId);
+    var zoneUrl = $"https://weather-api/zones/forecast/{zoneIdSegment}/forecast";
+    var forecasts = await httpClient.GetFromJsonAsync<ForecastResponse>(zoneUrl, options);
+
+    ```
+
+The service discovery system will now resolve `https://weather-api` to the actual URL of the National Weather Service API (`https://api.weather.gov`) that we defined in the AppHost configuration.
 
 ## Conclusion
 
