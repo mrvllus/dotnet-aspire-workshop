@@ -91,9 +91,6 @@ var builder = DistributedApplication.CreateBuilder(args);
 // Reference an external API service
 var weatherApi = builder.AddExternalService("weather-api", "https://api.weather.gov");
 
-// Your services can reference external services just like internal ones
-var api = builder.AddProject<Projects.Api>("api")
-    .WithReference(sharedDatabase);
 ```
 
 ![Dashboard with the additional external resource](media/external-service-resource.png)
