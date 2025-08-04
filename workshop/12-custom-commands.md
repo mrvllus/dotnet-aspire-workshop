@@ -133,6 +133,8 @@ commandOptions: new CommandOptions
 }
 ```
 
+The IconName comes from the Blazor FluentUI icons that the dashboard uses.  You can choose an icon to use on their site at: https://www.fluentui-blazor.net/Icon#explorer
+
 #### 3. Command Execution
 The `OnRunClearCacheCommandAsync` method:
 - Gets the Redis connection string
