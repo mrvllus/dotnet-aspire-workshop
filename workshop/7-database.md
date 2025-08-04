@@ -76,7 +76,7 @@ With `ContainerLifetime.Persistent`, the PostgreSQL container will continue runn
 <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.0" />
 ```
 
-1. Create your DbContext class:
+2. Create your DbContext class:
 
 ```csharp
 public class MyWeatherContext : DbContext
@@ -96,7 +96,7 @@ public class MyWeatherContext : DbContext
 }
 ```
 
-1. Register the DbContext in your application's Program.cs:
+3. Register the DbContext in your application's Program.cs:
 
 ```csharp
 builder.AddNpgsqlDbContext<MyWeatherContext>(connectionName: "weatherdb");
@@ -104,7 +104,7 @@ builder.AddNpgsqlDbContext<MyWeatherContext>(connectionName: "weatherdb");
 
 Note that .NET Aspire handles the connection string configuration automatically. The connection name "weatherdb" matches the database name we created in the AppHost project.
 
-1. Set up database initialization:
+4. Set up database initialization:
 
 ```csharp
 if (app.Environment.IsDevelopment())
@@ -130,24 +130,24 @@ Now we'll update the web application to support favoriting weather zones and fil
 @inject MyWeatherContext DbContext
 ```
 
-1. Add these new properties to the `@code` block to support the favorites functionality:
+2. Add these new properties to the `@code` block to support the favorites functionality:
 
 ```csharp
 bool ShowOnlyFavorites { get; set; }
 List<Zone> FavoriteZones { get; set; } = new List<Zone>();
 ```
 
-1. Update the `OnInitializedAsync` method to load favorites from the database. Find the existing method and replace it with:
+3. Update the `OnInitializedAsync` method to load favorites from the database. Find the existing method and replace it with:
 
 ```csharp
 protected override async Task OnInitializedAsync()
 {
     AllZones = (await NwsManager.GetZonesAsync()).ToArray();
-    FavoriteZones = await MyWeatherContext.FavoriteZones.ToListAsync();
+    FavoriteZones = await DbContext.FavoriteZones.ToListAsync();
 }
 ```
 
-1. Finally, add the `ToggleFavorite` method to handle saving favorites to the database. Add this method to the `@code` block:
+4. Finally, add the `ToggleFavorite` method to handle saving favorites to the database. Add this method to the `@code` block:
 
 ```csharp
 private async Task ToggleFavorite(Zone zone)
@@ -155,18 +155,18 @@ private async Task ToggleFavorite(Zone zone)
     if (FavoriteZones.Contains(zone))
     {
         FavoriteZones.Remove(zone);
-        MyWeatherContext.FavoriteZones.Remove(zone);
+        DbContext.FavoriteZones.Remove(zone);
     }
     else
     {
         FavoriteZones.Add(zone);
-        MyWeatherContext.FavoriteZones.Add(zone);
+        DbContext.FavoriteZones.Add(zone);
     }
     await DbContext.SaveChangesAsync();
 }
 ```
 
-1. In the `@code` block of `Home.razor`, locate the `zones` property and replace it with this updated version that includes the favorites filter:
+5. In the `@code` block of `Home.razor`, locate the `zones` property and replace it with this updated version that includes the favorites filter:
 
 ```csharp
 IQueryable<Zone> zones
@@ -191,7 +191,7 @@ IQueryable<Zone> zones
 }
 ```
 
-1. First, add a checkbox to filter the zones list. In `Home.razor`, add this code just before the `<QuickGrid>` element:
+6. First, add a checkbox to filter the zones list. In `Home.razor`, add this code just before the `<QuickGrid>` element:
 
 ```csharp
 <div class="form-check mb-3">
@@ -202,7 +202,7 @@ IQueryable<Zone> zones
 </div>
 ```
 
-1. Next, add a new column to show the favorite status. Add this column definition inside the `<QuickGrid>` element, after the existing State column:
+7. Next, add a new column to show the favorite status. Add this column definition inside the `<QuickGrid>` element, after the existing State column:
 
 ```csharp
 <TemplateColumn Title="Favorite">
