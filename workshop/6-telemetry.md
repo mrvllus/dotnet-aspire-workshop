@@ -78,7 +78,16 @@ builder.Services.AddOpenTelemetry()
 
 ## Implementing Telemetry in NwsManager
 
-Now we'll update the NwsManager class to use our metrics and implement structured logging. The implementation combines several observability features:
+Now we'll update the NwsManager class to use our metrics and implement structured logging. We'll need to start by adding ILogger to the primary constructor for the NwsManager class:
+
+```csharp
+   public class NwsManager(HttpClient httpClient, 
+    IMemoryCache cache, 
+    IWebHostEnvironment webHostEnvironment, 
+    ILogger<NwsManager> logger)
+```
+
+The implementation combines several observability features:
 
 ```csharp
 public async Task<Forecast[]> GetForecastByZoneAsync(string zoneId)
