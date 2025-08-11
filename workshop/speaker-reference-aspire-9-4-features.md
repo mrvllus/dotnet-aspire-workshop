@@ -155,7 +155,9 @@ var adminApi = builder.AddProject<Projects.AdminApi>("admin")
 
 ```csharp
 var foundry = builder.AddAzureAIFoundry("foundry");
-var chat = foundry.AddDeployment("chat", "gpt-4o-mini", "1", "Microsoft");
+const string ModelVersion = "1";
+const string Provider = "Microsoft";
+var chat = foundry.AddDeployment("chat", "gpt-4o-mini", ModelVersion, Provider);
 
 var aiService = builder.AddProject<Projects.AIService>("ai")
     .WithReference(chat);
