@@ -130,7 +130,7 @@ Now that we've defined the external weather API service in our AppHost, we need 
     ...
 
     var zoneIdSegment = HttpUtility.UrlEncode(zoneId);
-    var zoneUrl = $"https://weather-api/zones/forecast/{zoneIdSegment}/forecast";
+    var zoneUrl = $"zones/forecast/{zoneIdSegment}/forecast";
     var forecasts = await httpClient.GetFromJsonAsync<ForecastResponse>(zoneUrl, options);
 
     ```
