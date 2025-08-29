@@ -11,7 +11,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddHttpClient<NwsManager>(c =>
 {
-    var url = builder.Configuration["WeatherEndpoint"] ?? throw new InvalidOperationException("WeatherEndpoint is not set");
+    var url = "https+http://api";
 
     c.BaseAddress = new(url);
 });
