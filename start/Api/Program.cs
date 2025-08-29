@@ -6,6 +6,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddNwsManager();
 
+builder.AddServiceDefaults();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
