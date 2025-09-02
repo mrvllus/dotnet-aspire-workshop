@@ -10,6 +10,10 @@ builder.Services.AddNwsManager();
 
 builder.AddServiceDefaults();
 
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(m => m.AddMeter("NwsManagerMetrics"))
+    .WithTracing(m => m.AddSource("NwsManager"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

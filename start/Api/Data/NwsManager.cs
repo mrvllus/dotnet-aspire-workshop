@@ -6,7 +6,7 @@ using Api.Data;
 
 namespace Api
 {
-    public class NwsManager(HttpClient httpClient, IMemoryCache cache, IWebHostEnvironment webHostEnvironment)
+    public class NwsManager(HttpClient httpClient, IMemoryCache cache, ILogger<NwsManager> logger,IWebHostEnvironment webHostEnvironment)
     {
         private static readonly JsonSerializerOptions options = new(JsonSerializerDefaults.Web);
 
