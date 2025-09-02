@@ -10,6 +10,10 @@ builder.Services.AddNwsManager();
 
 builder.AddServiceDefaults();
 
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(m => m.AddMeter("NwsManagerMetrics"))
+    .WithTracing(m => m.AddSource("NwsManager"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,5 +26,8 @@ app.UseHttpsRedirection();
 
 // Map the endpoints for the API
 app.MapApiEndpoints();
+
+// This is crucial for Aspire telemetry collection
+app.MapDefaultEndpoints();
 
 app.Run();
