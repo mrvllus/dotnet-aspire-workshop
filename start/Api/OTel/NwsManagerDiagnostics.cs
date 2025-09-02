@@ -5,6 +5,8 @@ namespace Api.OTel;
 
 public class NwsManagerDiagnostics
 {
+    private static readonly Meter meter = new Meter("NwsManagerMetrics", "1.0");
+    
     public static readonly ActivitySource activitySource = new ActivitySource("NwsManager");
 
     public static readonly Counter<int> cacheHitCounter = 
@@ -22,5 +24,4 @@ public class NwsManagerDiagnostics
     public static readonly Histogram<double> forecastRequestDuration = 
         meter.CreateHistogram<double>("forecast_request_duration_seconds", "Histogram of forecast request durations");
     
-    private static readonly Meter meter = new Meter("NwsManagerMetrics", "1.0");
 }

@@ -27,4 +27,7 @@ app.UseHttpsRedirection();
 // Map the endpoints for the API
 app.MapApiEndpoints();
 
+// This is crucial for Aspire telemetry collection
+app.MapDefaultEndpoints();
+
 app.Run();
